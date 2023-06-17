@@ -17,12 +17,12 @@
    $create->price=str_replace("'", "''", $_POST['price']);
    $create->totalStock=str_replace("'", "''", $_POST['totalStock']);
    $create->description=str_replace("'", "''", $_POST['description']);
-   $create->image=str_replace("'", "''", $_POST['image']);
+     // Check if an image was uploaded
+     if (isset($_FILES['image']['name'])) {
+        $create->image = str_replace("'", "''", $_FILES['image']['name']);
+        $create->createStock();
+    } 
 
-   $create->createStock();
-
-  
-    //   $create->createStock($_POST["productID"],$_POST["productName"],$_POST["price"],$_POST["totalStock"],$_POST["description"],$image);  
    } 
 ?>
 
@@ -57,8 +57,8 @@
                         class="fas fa-user me-2"></i>Dropship</a>
                 <a href="adminproduct.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-chart-line me-2"></i>Product</a>
-                <a href="adminrequest.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Request</a>
+                <a href="adminorder.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-paperclip me-2"></i>Order</a>
                 <a href="agentLogout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
@@ -149,7 +149,7 @@
         <div class="row">
             <div class="col-12">
       
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-6">
                             <label for="productID" name="productID" class="form-label fw-bold mt-3">Product ID</label>

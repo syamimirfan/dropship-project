@@ -63,10 +63,7 @@
                         <a class="nav-link" href="dropshiphome.php">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Stock</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo SITEURL;?>request.php?agentID=<?php echo $agentID;?>">Request</a>
+                        <a class="nav-link active" aria-current="page" href="stock.php">Stock</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="agentLogout.php">Logout</a>
@@ -110,7 +107,7 @@
             <div class="col-sm-2 col-sm-4 single">
                 <div class="product">
                     <div class="text">
-                    <img class="img-responsive" src="<?php echo SITEURL;?>/images/<?php echo $stock['imageStock'];?>" alt="">
+                    <img class="img-responsive" src="<?php echo SITEURL;?>/stock/<?php echo $stock['imageStock'];?>" alt="">
                         <h3><?php echo $stock['productName'];?></h3>
 
                         <p class="price">RM <?php echo $stock['price'];?></p>
@@ -129,7 +126,7 @@
         else{
             ?>
             <p class="error-msg text-center fw-bold ">Sorry! the product that you search are not available, Please contact our administrator to request the product on the request page</p>
-            <p class="error-msg text-center fw-bold ">Please click on the New Stock to restock the product  <a class="link-request-page ml-10 color=red product-details" href="<?php echo SITEURL;?>request.php?agentID=<?php echo $agentID;?>">New Stock</a></p>
+           
             <?php
         }
             ?>

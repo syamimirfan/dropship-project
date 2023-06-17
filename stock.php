@@ -64,9 +64,6 @@
                         <a class="nav-link active" aria-current="page" href="#">Stock</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="<?php echo SITEURL;?>request.php?agentID=<?php echo $agentID;?>">Request</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="agentLogout.php">Logout</a>
                     </li>
                 </ul>
@@ -107,7 +104,8 @@
             <div class="col-sm-2 col-sm-4 single">
                 <div class="product">
                     <div class="text">
-                    <img class="img-responsive" src="<?php echo SITEURL;?>/images/<?php echo $stock['imageStock'];?>" alt="">
+                    <img class="img-responsive" src="<?php echo SITEURL;?>/stock/<?php echo $stock['imageStock'];?>" alt="">
+                        <h3>ID: <?php echo $stock['productID'];?></h3>
                         <h3><?php echo $stock['productName'];?></h3>
 
                         <p class="price">RM <?php echo $stock['price'];?></p>

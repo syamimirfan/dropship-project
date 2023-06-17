@@ -45,8 +45,8 @@
                         class="fas fa-user me-2"></i>Dropship</a>
                 <a href="adminproduct.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-chart-line me-2"></i>Product</a>
-                <a href="adminrequest.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Request</a>
+                <a href="adminorder.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-paperclip me-2"></i>Order</a>
                 <a href="agentLogout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>

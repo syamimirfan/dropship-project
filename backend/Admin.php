@@ -19,7 +19,7 @@
             if($result->num_rows >0){
                 return  $result;
             }
-    }
+        }
 
     public function getTotalAgentInDashboard() {
         $result = mysqli_query($this->conn,"SELECT COUNT(agentID) FROM agent");
@@ -48,26 +48,30 @@
         
         // $productID, $productName,$price, $totalStock, $description, $image
     public function createStock(){
+   
+        $tempname = $_FILES['image']['tmp_name'];
+        $originalname = $_FILES['image']['name'];
+        $size = ($_FILES['image']['size'] / 5242888) . "MB<br>";
+        $type = $_FILES['image']['type'];
 
-        if(isset($_FILES['image']['name']))
-        {
-             $image=$_FILES['image']['name'];
+        // Specify the destination folder path
+        $destinationFolder = "../dropship-project/stock/"; // Modify this path as needed
 
-             if($image != "") {
-                $tempname = $_FILES['image']['tmp_name'];
-                $originalname =$_FILES['image']['name'];
-                $size =($_FILES['image']['size']/5242888). "MB<br>";
-                $type=$_FILES['image']['type'];
-                move_uploaded_file($tempname,"../dropship-project/stock/".$image);
-             }
-           
-           }
+        move_uploaded_file($tempname, $destinationFolder . $this->image);
+    
+
 
         $query = "INSERT INTO stock (productID,productName,price,totalStock,description,imageStock) VALUES ('$this->productID', '$this->productName', 
                  '$this->price', '$this->totalStock', '$this->description','$this->image')";
 
         if(mysqli_query($this->conn,$query)) {
-            echo "<script> alert('Create Stock Successful'); </script>";
+            echo "<script> 
+            alert('Create Stock Successful');
+            setTimeout(function() {
+                window.location.href = '" . SITEURL . "/adminhome.php';
+            }); 
+          </script>";
+      
         }
         
     } 

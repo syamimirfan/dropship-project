@@ -57,10 +57,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="stock.php">Stock</a>
                     </li>
-  
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo SITEURL;?>request.php?agentID=<?php echo $agentID;?>">Request</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="agentLogout.php">Logout</a>
                     </li>

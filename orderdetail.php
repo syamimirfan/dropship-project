@@ -1,36 +1,34 @@
 <?php
    
-   include('../dropship-project/backend/Agent.php');
+   include('../dropship-project/backend/orderbackend.php');
+   $productDetail = new Order();
 
-  
-   $display = new Agent();
-   $displayHero = new Agent();
-   $getAgentID = new Agent();
-   $getProductID = new Agent();
-
-  if(isset($_GET["productID"])){
-    $data = $display->displayDetails($_GET["productID"]);
+   if(isset($_GET['productID'])){
+    $data = $productDetail->getProductDetail($_GET["productID"]);
     $row = mysqli_num_rows($data);
-  }
+   }
 
-  $data2 = $getAgentID->getAgentID();
-  $row2 = mysqli_num_rows($data2);
-  while($agent = mysqli_fetch_assoc($data2)){
-    $agentID = $agent['agentID'];
-  }
-
-  $data3 = $getProductID->getProductID();
-  $row3 = mysqli_num_rows($data3);
-  while($product = mysqli_fetch_assoc($data3)){
-    $productID = $product['productID'];
-  }
-
-
-  if(isset($_SESSION["agentID"])){
-    $display = $displayHero->heroSelectedAgentById($_SESSION["agentID"]);
-} else {
-  header("Location:".SITEURL."login.php");
+   if (isset($_GET['productID']) && isset($_GET['agentID']) && isset($_POST["submit"])) {
+    $result = $productDetail->createOrder($_GET["productID"], $_GET['agentID'], $_POST["quantity"], $_POST["customerName"], $_POST["customerTelephoneNo"], $_POST["customerAddress"]);
+    if ($result) {
+        echo "<script> 
+                alert('Order Stock Successful'); 
+                setTimeout(function() {
+                    window.location.href = '" . SITEURL . "/stock.php';
+                }); 
+              </script>";
+    } else {
+        echo "<script> 
+                alert('Order Stock Failed'); 
+                setTimeout(function() {
+                    window.location.href = '" . SITEURL . "/stock.php';
+                }); 
+              </script>";
+    }
 }
+
+   
+    
 ?>
 
 <!doctype html>
@@ -45,7 +43,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/dropship.css?modified=20012009">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-    <title>Dropship</title>
+    <title>Order</title>
 </head>
 
 <body>
@@ -57,8 +55,8 @@
                 <img class="logo-pic" src="images/logo.png" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+            <span class="navbar-toggler-icon"></span>
+          </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -71,9 +69,8 @@
                         <a class="nav-link" href="dropshiphome.php">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="stock.php">Stock</a>
+                        <a class="nav-link" href="stock.php">Stock</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link" href="agentLogout.php">Logout</a>
                     </li>
@@ -82,52 +79,56 @@
             </div>
         </div>
     </nav>
-
     <br><br>
-    <!--MAIN SECTION -->
-    <div class="container container-detail">
-    <?php 
-        while($detail = mysqli_fetch_assoc($data)){
-
-        ?>
+    <!-- MAIN SECTION -->
+    <div class="container request">
         <div class="row">
-      
-            <div class="col-sm-5">
-                <img class="img-responsive" src="<?php echo SITEURL;?>/images/<?php echo $detail['imageStock'];?>" width="100%"alt="">
+            <div class="col-8">
+                <?php 
+                  while($detail = mysqli_fetch_assoc($data)){
+                ?>
+                <h1>Order Form</h1>
+                <form action="" method="POST">
+                    <div class="row">
+                        <div class="col-12">
+                            <br>
+                            <label for="productID" class="form-label">Product ID</label>
+                            <h2 style="color: rgb(125, 32, 32);"><?php echo $detail['productID'];?></h2>
+                        </div>
+                        <div class="col-12">
+                            <br>
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number"name="quantity" id="quantity"  class="form-control">
+                        </div>
+                        <div class="col-12">
+                            <br>
+                            <label for="customerName" class="form-label">Customer Name</label>
+                            <input type="text"name="customerName" id="customerName" class="form-control">
+                        </div>
+                        <div class="col-12">
+                            <br>
+                            <label for="customerTelephoneNo" class="form-label">Customer Phone Number</label>
+                            <input type="text"name="customerTelephoneNo" id="customerTelephoneNo" class="form-control">
+                        </div>
+                        <div class="col-12">
+                            <br>
+                            <label for="customerAddress" class="form-label">Customer Address</label>
+                            <textarea name="customerAddress" id="customerAddress" class="form-control" cols="30" rows="10"></textarea>
+                            
+                        </div>
+                    </div>
             </div>
-            <div class="col-sm-7">
-                <p class="title"> Product:</p>
-                <h1><?php echo $detail['productName'];?></h1>
-                <p class="title"> Price per piece:</p>
-                <h3>RM <?php echo $detail['price'];?></h3>
-                <p class="title">Description:</p>
-                <p class="description"><?php echo $detail['description'];?></p>
-                <p class="title">Stock Available:</p>
-                <h3><?php echo $detail['totalStock'];?></h3>
-            <?php
-              if($detail['totalStock'] != 0){
-                 ?>
-                    <a class="title" href="<?php echo SITEURL;?>orderdetail.php?agentID=<?php echo $agentID;?>&productID=<?php echo $productID;?>">
-                    <button class="order">
-                        ORDER
-                    </button>
-                   </a>
-                 <?php
-              }else {
-                  ?>
-                <button class="order" disabled>
-                    Out of Stock
-                </button>
-                  <?php
-              }
-            ?>
 
+                    <div class="offset-1 col-lg-10">
+                            <button type="submit" name="submit" class="btn1">Submit</button>
+                    </div>     
             </div>
-       
-        </div>
-        <?php
-        }
+
+            </form>
+            <?php
+             }
             ?>
+        </div>
     </div>
 
     <br><br>

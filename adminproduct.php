@@ -57,8 +57,8 @@
                         class="fas fa-user me-2"></i>Dropship</a>
                 <a href="adminproduct.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
                         class="fas fa-chart-line me-2"></i>Product</a>
-                <a href="adminrequest.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Request</a>
+                <a href="adminorder.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-paperclip me-2"></i>Order</a>
                 <a href="agentLogout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
@@ -159,7 +159,7 @@
                             <tbody>
                                 <?php
                                   $stock = $display->getStock();
-            
+        
                                          while($data = mysqli_fetch_assoc($data_image)){
                                           ?>
                                     <tr>
@@ -167,7 +167,7 @@
                                     <td><?php echo $data['productName'];?></td>
                                     <td><?php echo $data['price'];?></td>
                                     <td><?php echo $data['totalStock'];?></td>
-                                    <td><img src="<?php echo SITEURL; ?>/images/<?php echo $data['imageStock'];?>" alt="" width="300px"></td>
+                                    <td><img src="<?php echo SITEURL; ?>/stock/<?php echo $data['imageStock'];?>" alt="" width="300px"></td>
                                     <td><form action="" method="POST">
                                     <button type="submit" name="" value="" class="update-btn"><a href="adminupdateproduct.php" class="text-white">UPDATE</a></button>
                                             <button type="submit" name="deleteStock" value="<?= $data['productID'];?>" class="delete-btn">DELETE</button>
