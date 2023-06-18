@@ -8,7 +8,12 @@
 
    $totalAgent = $display->getTotalAgentInDashboard();
    $totalStock = $display2->getTotalStockInDashboard();
-   $totalRequest = $display2->getTotalRequestInDashboard();
+   $totalOrder = $display2->getTotalOrderInDashboard();
+
+   if(isset($_GET['productID'])){
+    $data = $display->getStockInformation($_GET["productID"]);
+    $row = mysqli_num_rows($data);
+   }
    
    if(isset($_POST["submit"])){
          $update->productID = str_replace("'", "''", $_POST["productID"]);
@@ -117,15 +122,15 @@
                         <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
                             <?php
-                                 if($totalRequest){
-                                     foreach($totalRequest as $row){
+                                 if($totalOrder){
+                                     foreach($totalOrder as $row){
                                          ?>
                                           <h3 class="fs-2"><?php echo $row;?></h3>   
                                          <?php
                                      }
                                  }
                                 ?>
-                                <p class="fs-5">Request</p>
+                                <p class="fs-5">Order</p>
                             </div>
                             <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
                         </div>
@@ -141,12 +146,14 @@
     <div class="container request">
         <div class="row">
             <div class="col-12">
-      
+            <?php 
+                  while($detail = mysqli_fetch_assoc($data)){
+                ?>
                 <form action="" method="POST">
                     <div class="row">
                         <div class="col-6">
                             <label for="productID" name="productID" class="form-label fw-bold mt-3">Product ID</label>
-                            <input type="text" id="productID" name="productID" placeholder="Product ID" class="form-control" required>
+                            <h2><?php echo $detail['productID'];?></h2>
                         </div>
 
                      <div class="col-6">
@@ -162,6 +169,9 @@
             <br>
             <button type="submit" name="submit" class="btn ml-5">Submit</button>
             </form>
+            <?php
+             }
+            ?>
         </div>
     </div>
 

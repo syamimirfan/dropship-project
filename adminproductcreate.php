@@ -8,7 +8,7 @@
 
    $totalAgent = $display->getTotalAgentInDashboard();
    $totalStock = $display2->getTotalStockInDashboard();
-   $totalRequest = $display2->getTotalRequestInDashboard();
+   $totalOrder = $display2->getTotalOrderInDashboard();
 
    if(isset($_POST["submit"]) ){
 
@@ -124,15 +124,15 @@
                         <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
                             <?php
-                                  if($totalRequest){
-                                      foreach($totalRequest as $row) {
+                                  if($totalOrder){
+                                      foreach($totalOrder as $row) {
                                        ?>
                                        <h3 class="fs-2"><?php echo $row;?></h3>
                                        <?php
                                       }
                                   }
                                 ?>
-                                <p class="fs-5">Request</p>
+                                <p class="fs-5">Order</p>
                             </div>
                             <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
                         </div>

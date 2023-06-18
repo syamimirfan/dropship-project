@@ -30,10 +30,11 @@
         $result = mysqli_query($this->conn,"SELECT COUNT(productID) FROM stock");
         return mysqli_fetch_assoc($result);
     }
-    public function getTotalRequestInDashboard(){
-        $result = mysqli_query($this->conn,"SELECT COUNT(agentID) FROM request");
+    public function getTotalOrderInDashboard(){
+        $result = mysqli_query($this->conn,"SELECT COUNT(orderID) FROM orderstock");
         return mysqli_fetch_assoc($result);
     }
+
 
         public function deleteAgent($agentId){
             $sql = mysqli_query($this->conn,"DELETE FROM agent WHERE agentID = '$agentId'");
@@ -85,23 +86,45 @@
              echo "<script> alert('Update Stock Successful'); </script>";
            }
     }
+public function deleteStock($productID)
+{
+    // Get the image filename from the database
+    $query = "SELECT imageStock FROM stock WHERE productID = '$productID' LIMIT 1";
+    $result = mysqli_query($this->conn, $query);
 
-    public function deleteStock($productID){ 
-      
-        $query = "DELETE FROM stock WHERE productID = '$productID' LIMIT 1";
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $imageFilename = $row['imageStock'];
 
-        if(mysqli_query($this->conn,$query)){
-            return true;
-        }else {
-            return false;
+        // Delete the image file from the folder
+        $imagePath = "../dropship-project/stock/" . $imageFilename;
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
         }
     }
+
+    // Delete the stock record from the database
+    $deleteQuery = "DELETE FROM stock WHERE productID = '$productID' LIMIT 1";
+
+    if (mysqli_query($this->conn, $deleteQuery)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
     public function getStock(){
         $query = "SELECT * FROM stock";
         $result = mysqli_query($this->conn,$query);
          return  $result; 
     }
+
+    public function getStockInformation($productID){
+        $query = "SELECT * FROM stock WHERE productID = '$productID'";
+        $result = mysqli_query($this->conn,$query);
+         return  $result; 
+    }
+
 
   public function getRequest(){
       $query = "SELECT requestID, CONCAT(firstname,' ',lastname) AS name, email,phoneNumber, address, stockRequest FROM request r, agent a

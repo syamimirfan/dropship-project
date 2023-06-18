@@ -8,7 +8,7 @@
    
    $totalAgent = $display->getTotalAgentInDashboard();
    $totalStock = $display2->getTotalStockInDashboard();
-   $totalRequest = $display2->getTotalRequestInDashboard();
+   $totalOrder = $display2->getTotalOrderInDashboard();
   
    $data_image = $display->getStock();
    $row=mysqli_num_rows($data_image);
@@ -124,15 +124,15 @@
                         <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
                             <?php
-                                 if($totalRequest){
-                                     foreach($totalRequest as $row){
+                                 if($totalOrder){
+                                     foreach($totalOrder as $row){
                                          ?>
                                           <h3 class="fs-2"><?php echo $row;?></h3>   
                                          <?php
                                      }
                                  }
                                 ?>
-                                <p class="fs-5">Request</p>
+                                <p class="fs-5">Order</p>
                             </div>
                             <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
                         </div>
@@ -169,9 +169,9 @@
                                     <td><?php echo $data['totalStock'];?></td>
                                     <td><img src="<?php echo SITEURL; ?>/stock/<?php echo $data['imageStock'];?>" alt="" width="300px"></td>
                                     <td><form action="" method="POST">
-                                    <button type="submit" name="" value="" class="update-btn"><a href="adminupdateproduct.php" class="text-white">UPDATE</a></button>
-                                            <button type="submit" name="deleteStock" value="<?= $data['productID'];?>" class="delete-btn">DELETE</button>
-                                        </form</td>
+                                    <button type="submit" name="" value="" class="update-btn"><a href="<?php echo SITEURL;?>adminupdateproduct.php?productID=<?php echo $data['productID'];?>" class="text-white">UPDATE</a></button>
+                                    <button type="submit" name="deleteStock" value="<?= $data['productID'];?>" class="delete-btn">DELETE</button>
+                                    </form</td>
                                 </tr>
                                           <?php
                                       }

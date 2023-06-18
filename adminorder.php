@@ -1,24 +1,30 @@
 <?php
-   include('../dropship-project/backend/Admin.php');
-
-   $display = new Admin();
-   $display2 = new Admin();
-   $display3 = new Admin();
-   $deleteRequest = new Admin();
+  
+   include('../dropship-project/backend/orderbackend.php');
+   $display = new Order();
+   $display2 = new Order();
+   $display3 = new Order();
+   $order = new Order();
  
    $totalAgent = $display->getTotalAgentInDashboard();
    $totalStock = $display2->getTotalStockInDashboard();
-   $totalRequest = $display2->getTotalRequestInDashboard();
+   $totalOrder = $display2->getTotalOrderInDashboard();
 
-   $data_image = $display->getRequest();
-   $row=mysqli_num_rows($data_image);
 
-   if(isset($_POST['deleteRequest'])){
-      $result = $deleteRequest->deleteRequest($_POST["deleteRequest"]);
-      if($result){
-          
-        header('Location:'.SITEURL.'adminorder.php');
-        echo "<script> alert('Update Stock Successful'); </script>";
+   if(isset($_POST['updateorder'])){
+      $result = $order->updateOrder($_POST["orderID"],$_POST["agentID"]);
+      if($result){      
+            echo "<script> 
+            alert('Shipping Successful'); 
+       
+        </script>";
+      }else {
+        echo "<script> 
+        alert('Shipping Failed'); 
+        setTimeout(function() {
+            window.location.href = '" . SITEURL . "/adminorder.php';
+        }); 
+      </script>";
       }
    }
 ?>
@@ -121,15 +127,15 @@
                         <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
                             <?php
-                                 if($totalRequest){
-                                     foreach($totalRequest as $row){
+                                 if($totalOrder){
+                                     foreach($totalOrder as $row){
                                          ?>
                                           <h3 class="fs-2"><?php echo $row;?></h3>   
                                          <?php
                                      }
                                  }
                                 ?>
-                                <p class="fs-5">Request</p>
+                                <p class="fs-5">Order</p>
                             </div>
                             <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
                         </div>
@@ -139,37 +145,52 @@
                 </div>
 
                 <div class="row my-5">
-                    <h3 class="fs-4 mb-3">Recent Request</h3>
+                    <h3 class="fs-4 mb-3">Recent Order</h3>
                     <div class="col">
                         <table class="table bg-white rounded shadow-sm  table-hover">
                             <thead>
                                 <tr>
                         
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Phone Number</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">Products Request</th>
+                                    <th scope="col">Dropship Name</th>
+                                    <th scope="col">Product ID</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Customer Phone Number</th>
+                                    <th scope="col">Customer Address</th>
+                                   
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
-                                 while ($data = mysqli_fetch_assoc($data_image)){
-                                   ?>
-                                 <tr>
-                                    <td><?php echo $data['name'];?></td>
-                                    <td><?php echo $data['email'];?></td>
-                                    <td><?php echo $data['phoneNumber'];?></td>
-                                    <td><?php echo $data['address'];?></td>
-                                    <td><?php echo $data['stockRequest'];?></td>
-                                    <td> <form action="" method="POST">
-                                    <button class="restock-btn" name="deleteRequest" value="<?= $data['requestID']; ?>">DONE RESTOCK</button>
-                                    </form> </td>
-                                </tr>
-                               
-                                   <?php
-                                 }
+                            <?php
+                        $totalOrder = $order->getOrder();
+                        if ($totalOrder) {
+                            foreach ($totalOrder as $row) {
                                 ?>
+                                <tr>
+                                    <td><?php echo $row['firstname']; ?> <?php echo $row['lastname']; ?></td>
+                                    <td><?php echo $row['productID']; ?></td>
+                                    <td><?php echo $row['productName']; ?></td>
+                                    <td><?php echo $row['quantity']; ?></td>
+                                    <td><?php echo $row['customerName']; ?></td>
+                                    <td><?php echo $row['customerTelephoneNo']; ?></td>
+                                    <td><?php echo $row['customerAddress']; ?></td>
+                                    <td>
+                                        <?php if ($row['shippingStatus'] != 'Ship') { ?>
+                                            <form action="" method="POST">
+                                                <input type="hidden" name="orderID" value="<?= $row['orderID']; ?>">
+                                                <input type="hidden" name="agentID" value="<?= $row['agentID']; ?>">
+                                                <button class="restock-btn" name="updateorder" type="submit">Shipping</button>
+                                            </form>
+                                        <?php } else { ?>
+                                           <h3 class="text-success fw-bold">Shipped</h3>
+                                        <?php } ?>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
                             </tbody>
                         </table>
                     </div>
