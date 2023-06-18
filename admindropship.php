@@ -79,8 +79,8 @@
                         <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                             <div>
                                 <?php
-                                  if($totalOrder){
-                                      foreach($totalOrder as $row) {
+                                  if($totalAgent){
+                                      foreach($totalAgent as $row) {
                                        ?>
                                        <h3 class="fs-2"><?php echo $row;?></h3>
                                        <?php

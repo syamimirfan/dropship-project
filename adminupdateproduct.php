@@ -14,13 +14,60 @@
     $data = $display->getStockInformation($_GET["productID"]);
     $row = mysqli_num_rows($data);
    }
-   
-   if(isset($_POST["submit"])){
-         $update->productID = str_replace("'", "''", $_POST["productID"]);
-         $update->totalStock = str_replace("'", "''", $_POST["totalStock"]);
 
-         $update->updateStock();
+   // Define the rate limit settings
+   $limit = 1; // Maximum number of requests allowed
+   $duration = 15; // Time period in 15 seconds
+   
+   // Generate a unique identifier for the user or client
+   $identifier = $_SERVER['REMOTE_ADDR']; // Use IP address as the identifier, but you can use any suitable value
+   
+   // Get the current timestamp
+   $timestamp = time();
+   
+   // Check if the rate limit has been exceeded
+   if (isset($_POST['submit'])) {
+       // Check if the rate limit data is stored in the session
+       if (!isset($_SESSION['rate_limit'][$identifier])) {
+           // Initialize the rate limit data if it doesn't exist
+           $_SESSION['rate_limit'][$identifier] = [
+               'requests' => 1,
+               'timestamp' => $timestamp
+           ];
+       } else {
+           // Retrieve the rate limit data from the session
+           $rateLimitData = $_SESSION['rate_limit'][$identifier];
+   
+           // Check if the time duration has elapsed
+           if (($timestamp - $rateLimitData['timestamp']) > $duration) {
+               // Reset the rate limit data
+               $rateLimitData['requests'] = 1;
+               $rateLimitData['timestamp'] = $timestamp;
+           } else {
+               // Increment the number of requests
+               $rateLimitData['requests']++;
+           }
+   
+           // Store the updated rate limit data in the session
+           $_SESSION['rate_limit'][$identifier] = $rateLimitData;
+   
+           // Check if the rate limit has been exceeded
+           if ($rateLimitData['requests'] > $limit) {
+               // Rate limit exceeded, show an error message or take appropriate action
+               echo "<script> 
+                       alert('Rate limit exceeded. Please try again later.'); 
+                       window.location.href = '" . SITEURL . "/adminhome.php';
+                     </script>";
+               exit; // Stop further execution
+           }
+       }
+   
+       // Proceed with the stock update
+       $update->productID = str_replace("'", "''", $_GET['productID']);
+       $update->totalStock = str_replace("'", "''", $_POST['totalStock']);
+       $update->updateStock();
    }
+   
    
 ?>
 

@@ -81,9 +81,12 @@
            $query = "UPDATE stock SET totalStock = '$this->totalStock' WHERE productID = '$this->productID'";
            
            if(mysqli_query($this->conn,$query)){
-         
-             header('Location:'.SITEURL.'adminproduct.php');
-             echo "<script> alert('Update Stock Successful'); </script>";
+                echo "<script> 
+                alert('Update Stock Successful');
+                setTimeout(function() {
+                    window.location.href = '" . SITEURL . "/adminproduct.php';
+                }); 
+            </script>";
            }
     }
 public function deleteStock($productID)
