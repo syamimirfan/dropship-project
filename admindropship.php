@@ -162,7 +162,7 @@
                                         <td><?php echo $row['firstname']; ?></td>
                                         <td><?php echo $row['lastname']; ?></td>
                                         <td><?php echo $row['email']; ?></td>
-                                        <td><?php echo $row['commision']; ?></td>
+                                        <td>RM <?php echo $row['commision']; ?></td>
                                         <td><form action="" method="POST">
                                             <button type="submit" name="deleteAgent" value="<?= $row['agentID'];?>" class="delete-btn">DELETE</button>
                                         </form></td>

@@ -15,8 +15,9 @@
 
                 //to encrypt the password
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $commision = 0.00;
 
-                $query = "INSERT INTO agent VALUES('$agentID','$firstname','$lastname','$email','$hashedPassword')";
+                $query = "INSERT INTO agent VALUES('$agentID','$firstname','$lastname','$email','$hashedPassword', '$commision')";
                 mysqli_query($this->conn,$query);
                 return 1;
             }

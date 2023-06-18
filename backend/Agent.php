@@ -40,12 +40,5 @@
          return  $result; 
       }
 
-      public function getRequest($phoneNumber,$address,$stockRequest,$agentID){
-
-         $query = "INSERT INTO request(phoneNumber,address,stockRequest,agentID) VALUES('$phoneNumber','$address','$stockRequest','$agentID')";
-         $result = mysqli_query($this->conn,$query);
-         return $result;
-        
-      }
  }
    ?>

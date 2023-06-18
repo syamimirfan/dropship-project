@@ -126,23 +126,6 @@ public function deleteStock($productID)
     }
 
 
-  public function getRequest(){
-      $query = "SELECT requestID, CONCAT(firstname,' ',lastname) AS name, email,phoneNumber, address, stockRequest FROM request r, agent a
-                WHERE  r.agentID = a.agentID";
-      $result = mysqli_query($this->conn,$query);
-      return  $result;
-  }
-
-  public function deleteRequest($requestID){
-      $query = "DELETE FROM request WHERE requestID = '$requestID'";
-      
-      if(mysqli_query($this->conn,$query)){
-        return true;
-    }else {
-        return false;
-    }
-  }
-
    public function getAdminPasswords($password){
        $password = "admin123";
        return $password;
